@@ -1,0 +1,41 @@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor _httpContextAccessor
+@{
+    ViewData["Title"] = "Predict";
+}
+<div class="text-center" style="height: 100%; justify-content: center; align-items: center; padding-top: 24vh">
+    <h1 class="montserrat-font font-weight-bold">Upload <a href="/get_started#format">your dataset (Excel / CSV)</a></h1>
+    @using (Html.BeginForm("UploadPredictionFile", "Model", FormMethod.Post, new {enctype = "multipart/form-data"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Raw(ViewBag.ErrorMessage)
+        <div class="container" style="width: 300px">
+            <div class="col justify-content-start text-center">
+                <div >
+                    <label style="display: inline-block; width: 100%;">
+                        <input type="file" id="file_button" class="form-control-image" name="predictionFile" accept="text/csv, .xlsx">
+                        <span style="display: inline-block; width: 100%;" class="btn montserrat-font btn-outline-danger montserrat-font">upload file for prediction</span>
+                    </label>
+                </div>
+                <div>
+                    <label style="display: block; width: 100%;">
+                        <input type="text" style="text-align: center" placeholder="separator (char, for CSV)" id="separator_input" class="form-control montserrat-font" name="separator">
+                    </label>
+                </div>
+                <div >
+                    <div>
+                        <input type="checkbox" name="hasNoIndex" value="off"/>
+                        <label class="montserrat-font">first column is not index</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div>
+            <input type="submit" class="btn btn-primary round-border montserrat-font" id="submitButton" value="Process" style="width: 15vh">
+        </div>
+
+        <input hidden="hidden" name="@_httpContextAccessor.HttpContext.Request.Query["algorithm"]">
+        <input hidden="hidden" name="prefix" value="@_httpContextAccessor.HttpContext.Request.Query["prefix"]">
+    }
+</div>

@@ -1,0 +1,27 @@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor _httpContextAccessor
+
+@{
+    ViewData["Title"] = "Logs";
+}
+<h2 class="montserrat-font font-weight-bold">Log</h2>
+
+<p style="font-family: Consolas,monaco,monospace;" id="logs"></p>
+
+@section Scripts
+{
+    <script src="~/js/redirect_to_model_selection.js"></script>
+    <script>
+     (function update() {
+        $.ajax({
+            url: '@Url.Action("ReadData", "Task", new {task_id = _httpContextAccessor.HttpContext.Request.Query["task_id"]})',
+            success: function (data) {
+                $('#logs').html(data);
+            },
+            complete: function () {
+                setTimeout(update, 1000);
+            }
+        });
+    })();
+    </script>
+}

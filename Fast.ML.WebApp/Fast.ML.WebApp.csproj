@@ -1,0 +1,145 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <StartupObject>Fast.ML.WebApp.Program</StartupObject>
+    <UserSecretsId>644e8fca-caa6-48e2-8065-48e7a3b89391</UserSecretsId>
+    <OutputType>Exe</OutputType>
+    <IsTransformWebConfigDisabled>false</IsTransformWebConfigDisabled>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
+    <PackageReference Include="CsvReader.dll" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview4-19216-03" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0-preview3.19153.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0-preview3.19153.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0-preview3.19153.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Sylvan.Data.Csv" Version="1.1.13" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.6.0-preview4.19212.13" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Model\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000001-2022-05-17T14:46:49\b0a02279-5178-e65b-0411-697e01d49f3e-2022-05-17-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000001-2022-05-17T14:46:49\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000001-2022-05-17T14:49:57\7a712b1f-b9db-bdae-068d-26d3980fa7c0-2022-05-17-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000001-2022-05-17T14:49:57\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000001-2022-05-17T14:54:39\408872e3-adea-b6f3-b408-52052a2429f3-2022-05-17-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000001-2022-05-17T14:54:39\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000001-2022-05-17T14:58:48\ab15ed01-ffa2-876b-7e4a-c89cf7663999-2022-05-17-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000001-2022-05-17T14:58:48\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T18:00:17\c8ea8628-6bb7-a8ae-ffee-14667ec10f0b-2022-05-19-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T18:00:17\dataset_for_encoding.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T18:00:17\elastic_net.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T18:00:17\lasso.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T18:00:17\linear_regression.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T18:00:17\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T18:00:17\metrics.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T18:00:17\ridge.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T18:00:17\sgd_regressor.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\f46cb9e9-878f-709f-6de6-0f7e966b7065-2022-05-19\f46cb9e9-878f-709f-6de6-0f7e966b7065-2022-05-19-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\f46cb9e9-878f-709f-6de6-0f7e966b7065-2022-05-19\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T20:08:07\cfa86bb7-374a-3544-6494-b341a5894db0-2022-05-19-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T20:08:07\dataset_for_encoding.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T20:08:07\linear_regression.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T20:08:07\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T20:08:07\metrics.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T20:08:07\ridge.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\150fd4c1-30e6-df8b-2c91-91ad7f66d750-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\1d0f5ee3-0704-6b96-7fba-b3b42181cc70-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\240215f5-ab6b-3ef1-61a2-eadec91edc30-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\2468bd0e-a59d-4883-b016-289c24cf80f5-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\26f561d8-76d4-3d76-7c54-aab918ab7de8-2022-05-19-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\2730ce83-ac56-6963-4dfd-5e9b25b968de-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\33663fe4-8c81-cdac-89b6-05cb1ff5c217-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\4142714b-649e-3ac6-5315-556433fe6b1c-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\4282c574-b8e1-4535-9ff4-b7c6ffe4bbf1-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\4a3d1728-1cae-e3d3-f5b4-c9b098261451-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\4e6ea2e1-3d05-a196-29df-abd18d49e342-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\549e55ac-cb30-88b8-8f85-339141271292-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\7be2f33d-4bb0-d01e-5fdf-d346ecff37ad-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\7d44a717-2f5d-1f4d-55e7-f3e7975857d3-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\883cea8a-64fd-909a-33fe-7c77e19f4e12-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\8de7deb9-3721-e06b-32cd-5dfbbb946f9a-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\956107bb-fd4d-bcf3-2b5e-938249281711-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\a18d29f5-0336-6f57-20b6-34e1f64d19c9-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\a228a72f-04e3-7c24-4508-d7f1dfe8b241-2022-05-20-1.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\aac29ed3-c0c1-bb8f-03c0-0181b4b62d84-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\b14175d6-3831-effe-22ec-57d6d5c47053-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\b71846f9-91c4-b4d2-8a47-e0464922699f-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\b94132fb-963a-5ce8-c00a-15fcdf5ebb37-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\b9aafe9d-2738-3d2c-c964-4d9466271bf0-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\bd35c959-bb11-9a64-2a35-4de2a05da36e-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\c9266005-c6ea-8e6a-8999-9ac146c1b6b6-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\cfe244ee-acac-a09b-2391-5aa6fd81acab-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\d0ede4c2-75b5-00d4-e14c-87f2006a3369-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\d12d00c8-a226-623a-bc7d-de5b54e31c41-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\d8c8c1e9-6aad-c4b7-9d50-39333038d33f-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\dataset_for_encoding.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\db10ae58-3920-dfcf-fc50-601c6cc7fcca-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\db5d98ee-ca17-2f9d-f42a-09f4e225305a-2022-05-19-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\dd1123f1-ed55-4f43-8865-56374a3c073e-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\elastic_net.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\elastic_net_predictions.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\f6207887-cff1-d790-c5c3-d28f9bcc8a16-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\f72f1bc0-1108-c562-3ba0-5571d162a733-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\fb948960-f089-1a80-a811-e7204fed7cb1-2022-05-20-1.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\linear_regression.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\linear_regression_predictions.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\metrics.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\ridge.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-19T21:42:12\ridge_predictions.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T13:16:09\343d6b89-038b-c6d1-fda1-6fcec92c4425-2022-05-20-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T13:16:09\dataset_for_encoding.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T13:16:09\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T13:21:00\64731778-d17a-6372-2b88-d138fcdb462d-2022-05-20-0.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T13:21:00\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T13:21:32\641f67d4-48a2-8a99-3f82-53d6c55012b4-2022-05-20-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T13:21:32\dataset_for_encoding.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T13:21:32\linear_regression.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T13:21:32\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T13:21:32\metrics.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T13:21:32\ridge.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T14:11:20\dataset_for_encoding.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T14:11:20\f73187d7-d93a-29c1-975c-55a6b77b0163-2022-05-20-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T14:11:20\linear_regression.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T14:11:20\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T14:11:20\metrics.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T14:11:20\ridge.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:13:36\a79cc4f2-645c-40a3-25de-4a0c0d12e7b0-2022-05-20-0.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:13:36\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:14:04\dataset_for_encoding.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:14:04\elastic_net.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:14:04\f762ca8b-6e2c-a67c-675b-86edf05abb48-2022-05-20-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:14:04\lasso.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:14:04\linear_regression.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:14:04\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:14:04\metrics.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:14:04\ridge.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:14:04\sgd_regressor.pickle" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:14:46\de8e3d45-a775-f8d5-ab22-72c0cbeb85a0-2022-05-20-0.xlsx" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005-2022-05-20T15:14:46\log" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="wwwroot\upload\0000000005" />
+  </ItemGroup>
+
+
+  <!--ItemGroup>
+    <Folder Include="wwwroot\Example\" />
+    <Folder Include="wwwroot\Upload\" />
+  </ItemGroup-->
+
+</Project>

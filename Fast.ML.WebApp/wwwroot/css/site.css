@@ -1,0 +1,242 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    /*margin-bottom: 60px;*/
+}
+
+/*.footer {*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    width: 100%;*/
+/*    margin-top: auto;*/
+/*    white-space: nowrap;*/
+/*    !* Set the fixed height of the footer here *!*/
+/*    height: 60px;*/
+/*    line-height: 60px; !* Vertically center the text there *!*/
+/*}*/
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+}
+
+a.website-header {
+    font-family: Montserrat, sans-serif !important;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.magenta {
+    color: #fa3e6a;
+}
+
+text.montserrat-font,
+p.montserrat-font,
+li.montserrat-font,
+h1.montserrat-font,
+h2.montserrat-font,
+h3.montserrat-font,
+h4.montserrat-font,
+h5.montserrat-font,
+label.montserrat-font,
+a.montserrat-font,
+div.montserrat-font,
+.btn.montserrat-font,
+input.montserrat-font,
+td.montserrat-font,
+label.montserrat-font {
+    font-family: Montserrat, sans-serif !important;
+    font-weight: 400;
+}
+
+th.montserrat-font {
+    font-family: Montserrat, sans-serif !important;
+    font-weight: 800;
+}
+
+input[type='file'] {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+}
+
+img {
+    margin: 6px;
+}
+
+.btn.round-border {
+    border-radius: 30px;
+}
+
+.cookie {
+    width: 420px;
+    height: 72px;
+    background-color: rgba(250, 62, 106, 0.3);
+    position: fixed;
+    bottom: 88px;
+    border-radius: 10px;
+    left: 5%;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cookie .txt {
+    float: left;
+    align-content: center;
+    padding-top: 3%;
+    /*border-radius: 10px;*/
+    width: 65%;
+    font-family: Montserrat, sans-serif !important;
+}
+
+.txt p {
+    color: #1D2D35;
+    font-family: Montserrat, sans-serif !important;
+}
+
+.cookie .accept {
+    background-color: #fa3e6a;
+    color: #fff !important;
+    border-radius: 32px;
+    padding: 3px 23px;
+    font-size: 19px;
+    font-family: Montserrat, sans-serif !important;
+    /*margin-top: 2.5%;*/
+    margin-left: 3%;
+
+}
+
+.cookie .accept:hover {
+    background-color: #fd1249;
+}
+
+.index-background {
+    position: relative;
+    background-image: url("../img/index.png");
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: center;
+    background-size: 90%;
+}
+
+.page-container {
+    position: relative;
+    min-height: 70vh;
+}
+
+.content-wrap {
+    padding-bottom: 60px;
+}
+
+.centered-index {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+    margin-top: 30vmin;
+}
+
+.blue {
+    color: #0a7afd;
+}
+
+.magenta-border {
+    border-color: #fa3e6a;
+}
+
+.btn-outline-danger:hover {
+    border-color: #fa3e6a;
+    background-color: #fa3e6a;
+}
+
+.btn-danger:hover {
+    border-color: #ff0841;
+    background-color: #ff0841;
+}
+
+.btn-danger {
+    border-color: #fa3e6a;
+    background-color: #fa3e6a;
+}
+
+.btn-outline-danger {
+    border-color: #fa3e6a;
+    color: #fa3e6a;
+}
+
+.models {
+    max-height:150px;
+    overflow:scroll;
+}
+
+.alert-danger {
+    background-color: rgba(250, 62, 106, 0.3);
+    border-radius: 15px;
+    border-width: 0;
+    color: black;
+}
+
+.models::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 8px;
+}
+
+.models::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(250, 62, 106, 0.5);
+}
+
+.grid-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}

@@ -1,0 +1,52 @@
+INFO 2022-05-26 00:55:17,760 - Started preprocessing training data
+INFO 2022-05-26 00:55:18,021 - Training data successfully preprocessed
+INFO 2022-05-26 00:55:18,021 - Running with features: E8-1, I8-2, S6-3, S5-4, E2-5, E5-6, E6-7, E7-8, C5-9, I11-10, G1-11, M7-12, M10-13, M11-14, M3-15, M4-16, M1-17, M2-18, M5-19, M6-20, M8-21, M9-22, I10-23, A5-24, S15-25, S1-26, C2-27, C1-28, G2-29, E9-30, E10-31, E8-32, I8-33, S6-34, S5-35, E2-36, E5-37, E6-38, E7-39, C5-40, I11-41, G1-42, M7-43, M10-44, M11-45, M3-46, M4-47, M1-48, M2-49, M5-50, M6-51, M8-52, M9-53, I1054, A5-55, S15-56, S1-57, C2-58, C1-59, G2-60, E9-61, E10-62, E8-63, I8-64, S6-65, S5-66, E5-68, E6-69, E7-70, C5-71, I11-72, M7-73, M10-74, M11-75, M3-76, M4-77, M1-78, M2-79, M5-80, M6-81, M8-82, M9-83, I10-84, A5-85, S15-86, S1-87, C2-88, C1-89, E10-90, E61-E71, E73/E51, A51/M23, Tm-91, S-92, H-93, C-94, G-95, Tm-96, S-97, H-98, C-99, G-100, Tm-101, S-102, H-103, C-104, G-105
+INFO 2022-05-26 00:55:18,214 - Started training Linear Regression model
+INFO 2022-05-26 00:55:18,255 - Ended training Linear Regression model. Score: 0.998, mse: 0.000, mae: 0.008
+INFO 2022-05-26 00:55:18,272 - Started training Ridge model
+INFO 2022-05-26 00:55:18,324 - Started optimizing hyperparameters for Ridge model
+INFO 2022-05-26 00:55:28,465 - Ended optimizing hyperparameters for Ridge model
+INFO 2022-05-26 00:55:28,468 - Ended training Ridge model. Score: 0.926, mse: 0.005, mae: 0.057
+INFO 2022-05-26 10:10:18,357 - Started prediction with Linear Regression model
+ERROR 2022-05-26 10:10:18,417 - Exception calling application: X has 108 features, but LinearRegression is expecting 107 features as input.
+Traceback (most recent call last):
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/grpc/_server.py", line 443, in _call_behavior
+    response_or_iterator = behavior(argument, context)
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-microservices/fast-ml-linear-regression-api/fast_ml_linear_regression/services/linear_regressor.py", line 40, in Predict
+    message=pipeline.predict(filepath=request.filepath)
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-microservices/fast-ml-linear-regression-api/fast_ml_linear_regression/services/pipeline/predict.py", line 29, in predict
+    self._prediction_op.predict(X=features, model=model, output_directory=working_directory)
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-microservices/fast-ml-linear-regression-api/fast_ml_linear_regression/services/operations/predict.py", line 9, in predict
+    y = model.predict(X)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/sklearn/linear_model/_base.py", line 362, in predict
+    return self._decision_function(X)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/sklearn/linear_model/_base.py", line 345, in _decision_function
+    X = self._validate_data(X, accept_sparse=["csr", "csc", "coo"], reset=False)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/sklearn/base.py", line 585, in _validate_data
+    self._check_n_features(X, reset=reset)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/sklearn/base.py", line 400, in _check_n_features
+    raise ValueError(
+ValueError: X has 108 features, but LinearRegression is expecting 107 features as input.
+INFO 2022-05-26 10:10:27,583 - Started prediction with Linear Regression model
+ERROR 2022-05-26 10:10:27,598 - Exception calling application: X has 108 features, but LinearRegression is expecting 107 features as input.
+Traceback (most recent call last):
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/grpc/_server.py", line 443, in _call_behavior
+    response_or_iterator = behavior(argument, context)
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-microservices/fast-ml-linear-regression-api/fast_ml_linear_regression/services/linear_regressor.py", line 40, in Predict
+    message=pipeline.predict(filepath=request.filepath)
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-microservices/fast-ml-linear-regression-api/fast_ml_linear_regression/services/pipeline/predict.py", line 29, in predict
+    self._prediction_op.predict(X=features, model=model, output_directory=working_directory)
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-microservices/fast-ml-linear-regression-api/fast_ml_linear_regression/services/operations/predict.py", line 9, in predict
+    y = model.predict(X)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/sklearn/linear_model/_base.py", line 362, in predict
+    return self._decision_function(X)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/sklearn/linear_model/_base.py", line 345, in _decision_function
+    X = self._validate_data(X, accept_sparse=["csr", "csc", "coo"], reset=False)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/sklearn/base.py", line 585, in _validate_data
+    self._check_n_features(X, reset=reset)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/sklearn/base.py", line 400, in _check_n_features
+    raise ValueError(
+ValueError: X has 108 features, but LinearRegression is expecting 107 features as input.
+INFO 2022-05-26 11:29:59,283 - Started preprocessing prediction data
+INFO 2022-05-26 11:29:59,529 - Prediction data successfully preprocessed
+INFO 2022-05-26 11:29:59,529 - Running with features: E8-1, I8-2, S6-3, S5-4, E2-5, E5-6, E6-7, E7-8, C5-9, I11-10, G1-11, M7-12, M10-13, M11-14, M3-15, M4-16, M1-17, M2-18, M5-19, M6-20, M8-21, M9-22, I10-23, A5-24, S15-25, S1-26, C2-27, C1-28, G2-29, E9-30, E10-31, E8-32, I8-33, S6-34, S5-35, E2-36, E5-37, E6-38, E7-39, C5-40, I11-41, G1-42, M7-43, M10-44, M11-45, M3-46, M4-47, M1-48, M2-49, M5-50, M6-51, M8-52, M9-53, I1054, A5-55, S15-56, S1-57, C2-58, C1-59, G2-60, E9-61, E10-62, E8-63, I8-64, S6-65, S5-66, E5-68, E6-69, E7-70, C5-71, I11-72, M7-73, M10-74, M11-75, M3-76, M4-77, M1-78, M2-79, M5-80, M6-81, M8-82, M9-83, I10-84, A5-85, S15-86, S1-87, C2-88, C1-89, E10-90, E61-E71, E73/E51, A51/M23, Tm-91, S-92, H-93, C-94, G-95, Tm-96, S-97, H-98, C-99, G-100, Tm-101, S-102, H-103, C-104, G-105

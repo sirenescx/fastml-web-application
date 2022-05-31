@@ -1,0 +1,23 @@
+@* @using Microsoft.AspNetCore.Http *@
+@* @inject IHttpContextAccessor _httpContextAccessor *@
+@* *@
+@* <h2 class="montserrat-font">task @_httpContextAccessor.HttpContext.Request.Query["task_id"]</h2> *@
+@* *@
+@* <p style="font-family: Consolas,monaco,monospace;" id="logs"></p> *@
+@* *@
+@* @section Scripts *@
+@* { *@
+@*     <script> *@
+@*      (function update() { *@
+@*         $.ajax({ *@
+@*             url: '@Url.Action("ReadData", "Task", new {task_id = _httpContextAccessor.HttpContext.Request.Query["task_id"]})', *@
+@*             success: function (data) { *@
+@*                 $('#logs').html(data); *@
+@*             }, *@
+@*             complete: function () { *@
+@*                 setTimeout(update, 1000); *@
+@*             } *@
+@*         }); *@
+@*     })(); *@
+@*     </script> *@
+@* } *@

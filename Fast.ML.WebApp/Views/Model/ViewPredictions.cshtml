@@ -1,0 +1,79 @@
+@using Microsoft.AspNetCore.Http
+@using Fast.ML.WebApp.Utils
+@inject IHttpContextAccessor _httpContextAccessor
+@{
+    ViewData["Title"] = "Predictions";
+    var taskId = _httpContextAccessor?.HttpContext?.Request.Query["task_id"];
+}
+
+<h2 class="montserrat-font font-weight-bold">Prediction results</h2>
+
+@if (ViewBag.Predictions.Count > 0)
+{
+    <table class="table" id="predictionsTable" style="border-radius: 10px; border: 1px solid rgba(0,0,0,.125);">
+        <tr>
+            <th class="montserrat-font">Model</th>
+            <th class="montserrat-font">Download link</th>
+        </tr>
+
+        @for (var i = 0; i < ViewBag.Predictions.Count; ++i)
+        {
+            var value = ViewBag.Predictions[i];
+
+            <tr>
+                <td class="montserrat-font">@StringUtils.ToCamelCase(value)</td>
+                <td class="montserrat-font">
+                    <a asp-controller="Model"
+                       asp-action="DownloadPredictions"
+                       asp-route-task_id="@taskId"
+                       asp-route-algorithm="@value">
+                        Download
+                    </a>
+                </td>
+            </tr>
+        }
+
+        <tr hidden="hidden" id="prediction">
+            <td id="algorithm_name" class="montserrat-font"></td>
+            <td class="montserrat-font">
+                <a id="prediction_link"
+                   asp-controller="Model"
+                   asp-action="DownloadPredictions"
+                   asp-route-task_id="@taskId"
+                   asp-route-algorithm="">
+                    Download
+                </a>
+            </td>
+        </tr>
+    </table>
+    <div class="row">
+        <div class="col-6">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+}
+else
+{
+    <table class="table" hidden="hidden" id="predictionsTable" style="border-radius: 10px; border: 1px solid rgba(0,0,0,.125);">
+        <tr>
+            <th class="montserrat-font">Model</th>
+            <th class="montserrat-font">Download link</th>
+        </tr>
+        <tr hidden="hidden" id="prediction">
+            <td id="algorithm_name" class="montserrat-font"></td>
+            <td class="montserrat-font">
+                <a id="prediction_link"
+                   asp-controller="Model"
+                   asp-action="DownloadPredictions"
+                   asp-route-task_id="@taskId"
+                   asp-route-algorithm="">
+                    Download
+                </a>
+            </td>
+        </tr>
+    </table>
+}
+
+@section Scripts {
+    <script src="~/js/prediction_list_updater.js"></script>
+}

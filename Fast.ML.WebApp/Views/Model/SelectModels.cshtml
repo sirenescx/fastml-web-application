@@ -1,0 +1,50 @@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor _httpContextAccessor
+@{
+    ViewData["Title"] = "Select models";
+}
+@using (Html.BeginForm(
+    "SaveSelectedModels",
+    "Model",
+    new {task_id = _httpContextAccessor.HttpContext.Request.Query["task_id"]},
+    FormMethod.Post))
+{
+    <table class="table" id="models_table" style="border-radius: 10px; border: 1px solid rgba(0,0,0,.125);">
+        @for (var i = 0; i < ViewBag.Metrics.Count; ++i)
+        {
+            var values = ViewBag.Metrics[i].Split(",");
+            if (i == 0)
+            {
+                <tr>
+                    <th class="montserrat-font">Save</th>
+                    @for (int j = 0; j < values.Length; ++j)
+                    {
+                        <th onclick="sortTable(@(j + 1), 'models_table')" class="montserrat-font">@values[j] ▲</th>
+                    }
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" name="alg_@values[0]"/>
+                    </td>
+                    @foreach (var value in values)
+                    {
+                        <td class="montserrat-font">@value</td>
+                    }
+                </tr>
+            }
+        }
+    </table>
+    <br/>
+    <div class="text-center" style="justify-content: center; align-items: center;">
+        <button class="btn btn-primary montserrat-font round-border">Save selected models</button>
+    </div>
+}
+
+
+@section Scripts
+{
+    <script src="~/js/sort_table.js"></script>
+}

@@ -1,0 +1,5 @@
+INFO 2022-05-28 00:01:34,401 - Started preprocessing training data
+INFO 2022-05-28 00:01:34,849 - Training data successfully preprocessed
+INFO 2022-05-28 00:01:34,849 - Running with features: Avg. Session Length, Time on App, Length of Membership
+INFO 2022-05-28 00:01:34,955 - Started training Linear Regression model
+INFO 2022-05-28 00:01:35,184 - Ended training Linear Regression model. Score: 0.961, mse: 246.165, mae: 9.973

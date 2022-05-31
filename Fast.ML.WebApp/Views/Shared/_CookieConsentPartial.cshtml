@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Http.Features
+
+@{
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var showBanner = !consentFeature?.CanTrack ?? false;
+    var cookieString = consentFeature?.CreateConsentCookie();
+}
+
+@if (showBanner)
+{
+    <div id="cookieConsent" class="cookie alert alert-dismissible fade show" role="alert">
+        <div class="txt">
+            <p class="">
+                By using this website, <br>
+                you agree to our <a asp-area="" asp-controller="Home" asp-action="Privacy">Cookie Policy</a>.
+            </p>
+        </div>
+        <div>
+            <button type="button" class="accept-policy btn accept" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
+                <span aria-hidden="true">Accept</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var button = document.querySelector("#cookieConsent button[data-cookie-string]");
+            button.addEventListener("click", function (event) {
+                document.cookie = button.dataset.cookieString;
+            }, false);
+        })();
+    </script>
+}

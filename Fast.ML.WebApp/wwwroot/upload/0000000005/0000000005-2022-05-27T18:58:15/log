@@ -1,0 +1,63 @@
+INFO 2022-05-27 18:58:16,042 - Started preprocessing training data
+ERROR 2022-05-27 18:58:16,348 - Exception calling application: 'ValueError' object has no attribute 'encode'
+Traceback (most recent call last):
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-preprocessing-api/fast_ml_preprocessing/services/preprocessor.py", line 27, in PreprocessDataset
+    filepath: str = pipeline.process_dataset(
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-preprocessing-api/fast_ml_preprocessing/services/pipeline/process_data.py", line 63, in process_dataset
+    target = self._missing_values_filling_op.fill_missing_values_in_target(
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-preprocessing-api/fast_ml_preprocessing/services/operations/gaps_fill.py", line 44, in fill_missing_values_in_target
+    pd.DataFrame(
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/core/frame.py", line 694, in __init__
+    mgr = ndarray_to_mgr(
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/core/internals/construction.py", line 351, in ndarray_to_mgr
+    _check_values_indices_shape_match(values, index, columns)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/core/internals/construction.py", line 422, in _check_values_indices_shape_match
+    raise ValueError(f"Shape of passed values is {passed}, indices imply {implied}")
+ValueError: Shape of passed values is (46, 0), indices imply (46, 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/grpc/_server.py", line 443, in _call_behavior
+    response_or_iterator = behavior(argument, context)
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-preprocessing-api/fast_ml_preprocessing/services/preprocessor.py", line 38, in PreprocessDataset
+    context.abort(grpc.StatusCode.INVALID_ARGUMENT, error)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/grpc/_server.py", line 319, in abort
+    self._state.details = _common.encode(details)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/grpc/_common.py", line 72, in encode
+    return s.encode('utf8')
+AttributeError: 'ValueError' object has no attribute 'encode'
+INFO 2022-05-27 18:58:16,386 - Started training ElasticNet model
+ERROR 2022-05-27 18:58:16,393 - Exception calling application: 'utf-8' codec can't decode bytes in position 15-16: invalid continuation byte
+Traceback (most recent call last):
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/grpc/_server.py", line 443, in _call_behavior
+    response_or_iterator = behavior(argument, context)
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-microservices/fast-ml-elastic-net-api/fast_ml_elastic_net/services/elastic_net_regressor.py", line 25, in Train
+    configuration=pipeline.train(request.filepath)
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-microservices/fast-ml-elastic-net-api/fast_ml_elastic_net/services/pipeline/train.py", line 27, in train
+    data: pd.DataFrame = self._dataset_reading_op.read(filepath=filepath)
+  File "/Users/mmanakhova/Developer/diploma/fast-ml-microservices/fast-ml-elastic-net-api/fast_ml_elastic_net/services/operations/read_data.py", line 6, in read
+    return pd.read_csv(filepath, header=0, index_col=0, on_bad_lines='skip', engine="python")
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/util/_decorators.py", line 311, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/io/parsers/readers.py", line 680, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/io/parsers/readers.py", line 575, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/io/parsers/readers.py", line 933, in __init__
+    self._engine = self._make_engine(f, self.engine)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/io/parsers/readers.py", line 1235, in _make_engine
+    return mapping[engine](f, **self.options)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/io/parsers/python_parser.py", line 115, in __init__
+    ) = self._infer_columns()
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/io/parsers/python_parser.py", line 364, in _infer_columns
+    line = self._buffered_line()
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/io/parsers/python_parser.py", line 596, in _buffered_line
+    return self._next_line()
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/io/parsers/python_parser.py", line 696, in _next_line
+    orig_line = self._next_iter_line(row_num=self.pos + 1)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/site-packages/pandas/io/parsers/python_parser.py", line 760, in _next_iter_line
+    line = next(self.data)
+  File "/Users/mmanakhova/.conda/envs/fast-ml-preprocessing-api/lib/python3.10/codecs.py", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+UnicodeDecodeError: 'utf-8' codec can't decode bytes in position 15-16: invalid continuation byte

@@ -1,0 +1,13 @@
+INFO 2022-05-20 16:50:36,129 - Started preprocessing training data
+INFO 2022-05-20 16:50:36,346 - Training data successfully preprocessed
+INFO 2022-05-20 16:50:36,346 - Running with features: E8-1, I8-2, S6-3, S5-4, E2-5, E5-6, E6-7, E7-8, C5-9, I11-10, G1-11, M7-12, M10-13, M11-14, M3-15, M4-16, M1-17, M2-18, M5-19, M6-20, M8-21, M9-22, I10-23, A5-24, S15-25, S1-26, C2-27, C1-28, G2-29, E9-30, E10-31, E8-32, I8-33, S6-34, S5-35, E2-36, E5-37, E6-38, E7-39, C5-40, I11-41, G1-42, M7-43, M10-44, M11-45, M3-46, M4-47, M1-48, M2-49, M5-50, M6-51, M8-52, M9-53, I1054, A5-55, S15-56, S1-57, C2-58, C1-59, G2-60, E9-61, E10-62, E8-63, I8-64, S6-65, S5-66, E5-68, E6-69, E7-70, C5-71, I11-72, M7-73, M10-74, M11-75, M3-76, M4-77, M1-78, M2-79, M5-80, M6-81, M8-82, M9-83, I10-84, A5-85, S15-86, S1-87, C2-88, C1-89, E10-90, E61-E71, E73/E51, A51/M23, Tm-91, S-92, H-93, C-94, G-95, Tm-96, S-97, H-98, C-99, G-100, Tm-101, S-102, H-103, C-104, G-105
+INFO 2022-05-20 16:50:36,351 - Started training Linear Regression model
+INFO 2022-05-20 16:50:36,371 - Ended training Linear Regression model. Score: 0.998, mse: 0.000, mae: 0.008
+INFO 2022-05-20 16:50:36,376 - Started training Ridge model
+INFO 2022-05-20 16:50:36,391 - Started optimizing hyperparameters for Ridge model
+INFO 2022-05-20 16:50:46,610 - Ended optimizing hyperparameters for Ridge model
+INFO 2022-05-20 16:50:46,613 - Ended training Ridge model. Score: 0.997, mse: 0.000, mae: 0.010
+INFO 2022-05-20 16:50:46,620 - Started training Lasso model
+INFO 2022-05-20 16:50:46,630 - Started optimizing hyperparameters for Lasso model
+INFO 2022-05-20 16:50:58,239 - Ended optimizing hyperparameters for Lasso model
+INFO 2022-05-20 16:50:58,247 - Ended training Lasso model. Score: 0.997, mse: 0.000, mae: 0.011

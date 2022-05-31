@@ -1,0 +1,143 @@
+@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+@inject IHttpContextAccessor _httpContextAccessor
+
+@{
+    ViewData["Title"] = "Account";
+    var identity = (ClaimsIdentity) _httpContextAccessor.HttpContext?.User.Identity;
+    var claims = identity?.Claims.ToList();
+    var firstName = claims?.FirstOrDefault(claim => claim.Type.Equals(ClaimTypes.GivenName))?.Value;
+    var lastName = claims?.FirstOrDefault(claim => claim.Type.Equals(ClaimTypes.Surname))?.Value;
+    var email = claims?.FirstOrDefault(claim => claim.Type.Equals(ClaimTypes.Email))?.Value;
+    var userName = $"{firstName} {lastName}";
+}
+
+@* d-sm-flex *@
+@* border-right *@
+
+<div class="container">
+    <div class="bg-white rounded-lg  montserrat-font" style="height: 80vh; width: 100%">
+        <div class="profile-tab-nav ">
+            <div class="p-4">
+                <h4 class="text-center font-weight-bold">@userName</h4>
+            </div>
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="account-tab" data-toggle="pill" href="#account" role="tab" aria-controls="account" aria-selected="true">
+                    <i class="fa fa-home text-center mr-1"></i>
+                    Account
+                </a>
+                <a class="nav-link" id="application-tab" data-toggle="pill" href="#application" role="tab" aria-controls="application" aria-selected="false">
+                    <i class="fa fa-tv text-center mr-1"></i>
+                    Saved model configurations
+                </a>
+            </div>
+        </div>
+        <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+                <h3 class="mb-4">Account details</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" class="form-control" disabled="disabled" value=@firstName>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" class="form-control" disabled="disabled" value=@lastName>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="text" class="form-control" disabled="disabled" value=@email>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="application" role="tabpanel" aria-labelledby="application-tab" style="overflow-y:scroll;max-height: 60vh; width: 100%">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="border-radius: 5px; border: 1px solid rgba(0,0,0,.125);">
+                        <ul class="list-group" style="overflow-y:scroll;max-height: 55vh">
+                            @for (var i = 0; i < ViewBag.Algorithms.Count; ++i)
+                            {
+                                var algorithm = ViewBag.Algorithms[i];
+                                var algorithmName = algorithm.Split("\t")[1];
+                                var taskId = algorithm.Split("\t")[0];
+                                if (i == 0)
+                                {
+                                    <li class="list-group-item" style="border-top:0;border-left:0;border-right:0">
+                                        <label style="float: left; margin-top: 0.5rem; margin-bottom: 0">@algorithm</label>
+                                        <div style="float: right">
+                                            <a
+                                                class="btn btn-primary"
+                                                asp-controller="Model" asp-action="Predict"
+                                                asp-route-algorithm="@algorithmName"
+                                                asp-route-prefix="@taskId">
+                                                Predict
+                                            </a>
+                                            <a
+                                                class="btn btn-danger"
+                                                asp-controller="Model" asp-action="DeleteModel"
+                                                asp-route-algorithm="@algorithmName"
+                                                asp-route-task_id="@taskId">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </li>
+                                }
+                                else if (i == ViewBag.Algorithms.Count - 1)
+                                {
+                                    <li class="list-group-item" style="border-bottom:0;border-left:0;border-right:0">
+                                        <label style="float: left; margin-top: 0.5rem; margin-bottom: 0">@algorithm</label>
+                                        <div style="float: right">
+                                            <a
+                                                class="btn btn-primary"
+                                                asp-controller="Model" asp-action="Predict"
+                                                asp-route-algorithm="@algorithm.Split("\t")[1]"
+                                                asp-route-prefix="@algorithm.Split("\t")[0]">
+                                                Predict
+                                            </a>
+                                            <a
+                                                class="btn btn-danger"
+                                                asp-controller="Model" asp-action="DeleteModel"
+                                                asp-route-algorithm="@algorithmName"
+                                                asp-route-task_id="@taskId">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="list-group-item" style="border-left:0;border-right:0">
+                                        <label style="float: left; margin-top: 0.5rem; margin-bottom: 0">@algorithm</label>
+                                        <div style="float: right">
+                                            <div style="float: right">
+                                                <a
+                                                    class="btn btn-primary"
+                                                    asp-controller="Model" asp-action="Predict"
+                                                    asp-route-algorithm="@algorithm.Split("\t")[1]"
+                                                    asp-route-prefix="@algorithm.Split("\t")[0]">
+                                                    Predict
+                                                </a>
+                                                <a
+                                                    class="btn btn-danger"
+                                                    asp-controller="Model" asp-action="DeleteModel"
+                                                    asp-route-algorithm="@algorithmName"
+                                                    asp-route-task_id="@taskId">
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
