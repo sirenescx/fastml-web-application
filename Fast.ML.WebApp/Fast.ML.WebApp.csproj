@@ -181,6 +181,10 @@
     <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005\0000000005-2022-05-27T18:58:30\elastic_net_predictions.csv" />
     <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005\0000000005-2022-05-27T18:58:30\log" />
     <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005\0000000005-2022-05-27T18:58:30\metrics.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005\0000000005-2022-05-20T15:54:21\dataset_for_encoding.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005\0000000005-2022-05-20T15:54:21\e5ce2a0e-4c89-95db-26fd-d8521334c808-2022-05-20-0.csv" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005\0000000005-2022-05-20T15:54:21\log" />
+    <_ContentIncludedByDefault Remove="wwwroot\upload\0000000005\0000000005-2022-05-20T15:54:21\metrics.csv" />
   </ItemGroup>
 
 
