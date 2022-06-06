@@ -2,9 +2,13 @@ function sortTable(n, tableId) {
     let table, rows, switching, i, x, y, shouldSwitch, order, switchCount = 0;
     table = document.getElementById(tableId);
     if (table.getElementsByTagName("th")[n].innerHTML.endsWith("▼")) {
-        table.getElementsByTagName("th")[n].innerHTML = table.getElementsByTagName("th")[n].innerHTML.replace("▼", "▲");
+        table.getElementsByTagName("th")[n].innerHTML = 
+            table.getElementsByTagName("th")[n].innerHTML
+                .replace("▼", "▲");
     } else {
-        table.getElementsByTagName("th")[n].innerHTML = table.getElementsByTagName("th")[n].innerHTML.replace("▲", "▼");
+        table.getElementsByTagName("th")[n].innerHTML = 
+            table.getElementsByTagName("th")[n].innerHTML
+                .replace("▲", "▼");
     }
     switching = true;
     order = "asc";

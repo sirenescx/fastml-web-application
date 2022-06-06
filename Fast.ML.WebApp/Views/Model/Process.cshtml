@@ -5,15 +5,20 @@
 @using (Html.BeginForm(
     "RunTrain", 
     "Model", 
-    new {prefix = ViewBag.Prefix, delimiter = ViewBag.Delimiter, index = ViewBag.Index}, 
+    new {prefix = ViewBag.Prefix, 
+        elimiter = ViewBag.Delimiter, 
+        index = ViewBag.Index}, 
     FormMethod.Post))
 {
-    <div class="alert alert-danger montserrat-font text-center" hidden="hidden" role="alert" id="errorMessage"></div>
+    <div class="alert alert-danger montserrat-font text-center"
+         hidden="hidden" role="alert" id="errorMessage"></div>
     <h1 class="montserrat-font font-weight-bold">Problem settings</h1>
 
     <div class="montserrat-font">
         <p class="form-label">Target column</p>
-        <input class="form-control col-sm-6" list="datalistOptions" id="targetColumn" name="target_column" placeholder="Type to search..." value="@ViewBag.TrainFeatureNames[0]">
+        <input class="form-control col-sm-6" list="datalistOptions" 
+               id="targetColumn" name="target_column" placeholder="Type to search..." 
+               value="@ViewBag.TrainFeatureNames[0]">
         <datalist id="datalistOptions">
             @foreach (var feature in ViewBag.TrainFeatureNames)
             {
@@ -22,41 +27,57 @@
         </datalist>
         <br/>
         <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" style="width: 20vh" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-primary dropdown-toggle" style="width: 20vh" 
+                    type="button" id="dropdownMenuButton" data-toggle="dropdown" 
+                    aria-haspopup="true" aria-expanded="false">
                 Problem type
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#" onclick="changeMethods('classification')">Classification</a>
-                <a class="dropdown-item" href="#" onclick="changeMethods('regression')">Regression</a>
+                <a class="dropdown-item" href="#" 
+                   onclick="changeMethods('classification')">Classification</a>
+                <a class="dropdown-item" href="#" 
+                   onclick="changeMethods('regression')">Regression</a>
             </div>
         </div>
         <br/>
         <p>
-            <a class="btn btn-primary" style="width: 20vh" data-toggle="collapse" href="#collapseMethods" role="button" aria-expanded="false" aria-controls="collapseMethods">
-                Models <span class="badge badge-light" id="methodsSelectedCount">@Html.Raw(ViewBag.MethodsSelectedCount)</span>
+            <a class="btn btn-primary" style="width: 20vh" data-toggle="collapse" 
+               href="#collapseMethods" role="button" aria-expanded="false" 
+               aria-controls="collapseMethods">
+                Models <span class="badge badge-light"
+                             id="methodsSelectedCount">
+                    @Html.Raw(ViewBag.MethodsSelectedCount)
+                </span>
             </a>
         </p>
-        <div class="collapse" id="collapseMethods" content="test" style="height: 45vh; overflow-y:scroll">
-            <div class="card card-body pb-0 mb-3 montserrat-font" id="classificationMethods" style="height: 45vh; overflow-y:scroll">
+        <div class="collapse" id="collapseMethods" content="test" 
+             style="height: 45vh; overflow-y:scroll">
+            <div class="card card-body pb-0 mb-3 montserrat-font" 
+                 id="classificationMethods" style="height: 45vh; overflow-y:scroll">
                 @Html.Raw(ViewBag.ClassificationMethods)
             </div>
 
-            <div class="card card-body pb-0 mb-3 montserrat-font" hidden="hidden" id="regressionMethods" style="height: 45vh; overflow-y:scroll">
+            <div class="card card-body pb-0 mb-3 montserrat-font" 
+                 hidden="hidden" id="regressionMethods" 
+                 style="height: 45vh; overflow-y:scroll">
                 @Html.Raw(ViewBag.RegressionMethods)
             </div>
         </div>
 
         <div>
-            <input type="submit" class="btn btn-primary round-border" id="submitButton" value="Process" onClick="return empty()" style="margin: 0 auto; display: block; width: 15vh">
+            <input type="submit" class="btn btn-primary round-border" 
+                   id="submitButton" value="Process" onClick="return empty()" style="margin: 0 auto; display: block; width: 15vh">
         </div>
         <script>
          $(document).ready(function () {
              $("#collapseMethods input[type='checkbox']").click(function () {
-                 $("#methodsSelectedCount").html($("#collapseMethods input[type='checkbox']:checked").length);
+                 $("#methodsSelectedCount")
+                 .html($("#collapseMethods input[type='checkbox']:checked").length);
              });
          });
         </script>
-        <input hidden="hidden" name="problem_type" value="classification" id="problemType"/>
+        <input hidden="hidden" name="problem_type" 
+               value="classification" id="problemType"/>
     </div>
 }
 
@@ -67,13 +88,15 @@
             if (method === "classification") {
                 document.getElementById("regressionMethods").hidden = true;
                 document.getElementById("classificationMethods").hidden = false;
-                let checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+                let checkboxes = document
+                .querySelectorAll('input[type="checkbox"]:checked');
                 checkboxes.forEach(checkbox => checkbox.click());
                 document.getElementById("problemType").value = "classification";
             } else {
                 document.getElementById("classificationMethods").hidden = true;
                 document.getElementById("regressionMethods").hidden = false;
-                let checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+                let checkboxes = document
+                .querySelectorAll('input[type="checkbox"]:checked');
                 checkboxes.forEach(checkbox => checkbox.click());
                 document.getElementById("problemType").value = "regression";
             }
@@ -85,14 +108,17 @@
             let targetName = document.getElementById("targetColumn").value;
             if (targetName === "") {
                 document.getElementById("errorMessage").hidden = false;
-                document.getElementById("errorMessage").innerText = "Target column must be chosen.";
+                document.getElementById("errorMessage")
+                .innerText = "Target column must be chosen.";
                 return false;
             }
             
-            let chosenMethods = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            let chosenMethods = document
+            .querySelectorAll('input[type="checkbox"]:checked').length;
             if (chosenMethods === 0) {
                 document.getElementById("errorMessage").hidden = false;
-                document.getElementById("errorMessage").innerText = "At least one method must be chosen.";
+                document.getElementById("errorMessage")
+                .innerText = "At least one method must be chosen.";
                 return false;
             }
         }

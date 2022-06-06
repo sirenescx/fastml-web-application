@@ -5,12 +5,14 @@ namespace Fast.ML.WebApp.Utils;
 
 public static class StringUtils
 {
-    public static bool IsChar(this string text) => !string.IsNullOrEmpty(text) && text.Length == 1;
+    public static bool IsChar(this string text) => 
+        !string.IsNullOrEmpty(text) && text.Length == 1;
 
     public static string RemovePrefix(this string text, string prefix) => 
         text.Replace(prefix, string.Empty);
     
-    public static string AddSuffix(this string text, string suffix) => string.Concat(text, suffix);
+    public static string AddSuffix(this string text, string suffix) => 
+        string.Concat(text, suffix);
 
     public static string ToSnakeCase(this string text)
     {

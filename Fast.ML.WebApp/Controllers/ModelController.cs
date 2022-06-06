@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Sylvan.Data.Csv;
 
 namespace Fast.ML.WebApp.Controllers;
 
@@ -43,32 +44,38 @@ public class ModelController : Controller
     }
 
     [HttpPost("model/upload_files")]
-    public async Task<IActionResult> UploadTrainingFile(IFormFile trainingFile, IFormCollection data)
+    public async Task<IActionResult> UploadTrainingFile(
+        IFormFile trainingFile, IFormCollection data)
     {
         var separator = data.GetValue(Separator);
         var hasIndex = data.GetValueWithComparison(NoIndex, Off);
 
         if (trainingFile is null)
         {
-            ViewData[ErrorMessage] = GetErrorAlertHTML("File for training was not uploaded.");
+            ViewData[ErrorMessage] = GetErrorAlertHTML(
+                "File for training was not uploaded.");
             return View("Index");
         }
 
         var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
-        var folder = FileUtils.GetUserFolder(_environment.WebRootPath, userId);
-        var fileNamePrefix = FileUtils.GetFileNamePrefix(_httpContextAccessor.HttpContext?.Session.Id, DateTime.Now);
+        var folder = FileUtils.GetUserFolder(
+            _environment.WebRootPath, userId);
+        var fileNamePrefix = FileUtils.GetFileNamePrefix(
+            _httpContextAccessor.HttpContext?.Session.Id, DateTime.Now);
 
         if (!FileUtils.IsExcelFile(trainingFile.FileName))
         {
             if (string.IsNullOrEmpty(separator))
             {
-                ViewData[ErrorMessage] = GetErrorAlertHTML("Separator is required for .csv files.");
+                ViewData[ErrorMessage] = GetErrorAlertHTML(
+                    "Separator is required for .csv files.");
                 return View("Index");
             }
 
             if (!separator.IsChar())
             {
-                ViewData[ErrorMessage] = GetErrorAlertHTML("Separator could be one char only.");
+                ViewData[ErrorMessage] = GetErrorAlertHTML(
+                    "Separator could be one char only.");
                 return View("Index");
             }
         }
@@ -82,44 +89,68 @@ public class ModelController : Controller
         if (!string.IsNullOrEmpty(trainingFileUploadResult))
             return RedirectToAction(
                 "Process",
-                new {prefix = fileNamePrefix, separator = separator, index = Convert.ToInt32(!hasIndex)});
+                new
+                {
+                    prefix = fileNamePrefix, 
+                    separator = separator, 
+                    index = Convert.ToInt32(!hasIndex)
+                });
         
-        ViewData[ErrorMessage] = GetErrorAlertHTML("File for training was not uploaded.");
+        ViewData[ErrorMessage] = GetErrorAlertHTML(
+            "File for training was not uploaded.");
         return View("Index");
     }
 
     public IActionResult Process(string prefix, string separator, int index)
     {
         var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
-        var files = FileUtils.FindSessionFiles(_environment.WebRootPath, userId, prefix);
+        var files = FileUtils.FindSessionFiles(
+            _environment.WebRootPath, userId, prefix);
         if (files.Length == 0)
         {
             return RedirectToAction("Index");
         }
-        var trainingFileName = files.First().FullName;
+        var fileName = files.First().FullName;
 
         string[] trainingFeatures;
 
-        if (!string.IsNullOrEmpty(separator))
+        if (FileUtils.GetFileExtension(fileName) == ".csv" && 
+            !string.IsNullOrEmpty(separator))
         {
             var delimiter = separator.First();
-            trainingFeatures = ExtractFeatureNamesFromCsv(trainingFileName, delimiter, index);
+            try
+            {
+                trainingFeatures = ExtractFeatureNamesFromCsv(fileName, delimiter, index);
+            }
+            catch (CsvConfigurationException)
+            {
+                ViewData[ErrorMessage] = GetErrorAlertHTML(
+                    "Unable to read CSV file. Please try to upload another one.");
+                System.IO.File.Delete(fileName);
+                return View("Index");
+            }
+
+            if (trainingFeatures.Length < 2)
+            {
+                ViewData[ErrorMessage] = GetErrorAlertHTML(
+                    "Training dataset should contain at least two columns. " +
+                    "Please upload a valid dataset or try to use another CSV separator.");
+                System.IO.File.Delete(fileName);
+                return View("Index");
+            }
             ViewBag.Delimiter = separator;
         }
         else
         {
-            if (!FileUtils.IsExcelFile(trainingFileName))
+            trainingFeatures = ExtractFeatureNamesFromExcel(fileName, index);
+            if (trainingFeatures.Length < 2)
             {
-                ViewData[ErrorMessage] = GetErrorAlertHTML("Training dataset should contain at least two columns.");
+                ViewData[ErrorMessage] = GetErrorAlertHTML(
+                    @"Training dataset should contain at least two columns. 
+Please upload a valid dataset.");
+                System.IO.File.Delete(fileName);
                 return View("Index");
             }
-            trainingFeatures = ExtractFeatureNamesFromExcel(trainingFileName, index);
-        }
-
-        if (trainingFeatures.Length < 2)
-        {
-            ViewData[ErrorMessage] = GetErrorAlertHTML("Training dataset should contain at least two columns.");
-            return View("Index");
         }
 
         ViewBag.TrainFeatureNames = trainingFeatures;
@@ -132,8 +163,16 @@ public class ModelController : Controller
 
     [HttpGet]
     [Route("upload_file_for_prediction")]
-    public Task<IActionResult> Predict([FromQuery] string algorithm, [FromQuery] string prefix)
+    public Task<IActionResult> Predict(
+        [FromQuery] string algorithm, 
+        [FromQuery] string prefix, 
+        [FromQuery] bool? success)
     {
+        if (success == null)
+            return Task.FromResult<IActionResult>(View());
+        ViewData[ErrorMessage] = GetErrorAlertHTML(
+            @"Features in the prediction dataset do 
+not match features in the trained model.");
         return Task.FromResult<IActionResult>(View());
     }
     
@@ -149,20 +188,24 @@ public class ModelController : Controller
         var hasIndex = data.GetValueWithComparison(NoIndex, Off);
 
         var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
-        var folder = FileUtils.GetUserFolder(_environment.WebRootPath, userId);
-        var fileNamePrefix = FileUtils.GetFileNamePrefix(_httpContextAccessor.HttpContext?.Session.Id, DateTime.Now);
+        var folder = FileUtils.GetUserFolder(
+            _environment.WebRootPath, userId);
+        var fileNamePrefix = FileUtils.GetFileNamePrefix(
+            _httpContextAccessor.HttpContext?.Session.Id, DateTime.Now);
 
         if (!FileUtils.IsExcelFile(predictionFile.FileName))
         {
             if (string.IsNullOrEmpty(separator))
             {
-                ViewData[ErrorMessage] = GetErrorAlertHTML("Separator is required for .csv files.");
+                ViewData[ErrorMessage] = GetErrorAlertHTML(
+                    "Separator is required for .csv files.");
                 return View("Index");
             }
 
             if (!separator.IsChar())
             {
-                ViewData[ErrorMessage] = GetErrorAlertHTML("Separator could be one char only.");
+                ViewData[ErrorMessage] = GetErrorAlertHTML(
+                    "Separator could be one char only.");
                 return View("Index");
             }
         }
@@ -172,12 +215,17 @@ public class ModelController : Controller
         _ = await SaveFile(
             folder,
             predictionFile,
-            FileUtils.GetServerFileName(fileNamePrefix, predictionFileExtension, true));
+            FileUtils.GetServerFileName(
+                fileNamePrefix, predictionFileExtension, true));
 
         return RedirectToAction(
             "RunPredict",
             new {
-                task_id = taskId, prefix = fileNamePrefix, delimiter = separator, index = Convert.ToInt32(!hasIndex), algorithm = algorithms.First()}
+                task_id = taskId, 
+                prefix = fileNamePrefix, 
+                delimiter = separator, 
+                index = Convert.ToInt32(!hasIndex), 
+                algorithm = algorithms.First()}
             );
     }
 
@@ -188,10 +236,13 @@ public class ModelController : Controller
         int index, 
         string algorithm)
     {
-        var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
-        var fileName = FileUtils.FindSessionFiles(_environment.WebRootPath, userId, prefix).Last().FullName;
+        var userId = Convert.ToInt32(_httpContextAccessor
+            .GetClaimValue(ClaimTypes.Sid));
+        var fileName = FileUtils.FindSessionFiles(
+            _environment.WebRootPath, userId, prefix).Last().FullName;
         
-        var uri = Requests.GetRequestUri(_apiHttpClient?.BaseAddress, ApiEndpoints.Predict);
+        var uri = Requests.GetRequestUri(
+            _apiHttpClient?.BaseAddress, ApiEndpoints.Predict);
         var request = new PredictionRequest
         {
             TaskId = taskId,
@@ -201,10 +252,14 @@ public class ModelController : Controller
             Algorithms = new[] {algorithm}
         };
 
-        _apiHttpClient?.SendAsync(Requests.GetRequestMessage(request, uri)).ConfigureAwait(false);
-
+        _apiHttpClient?.SendAsync(
+            Requests.GetRequestMessage(request, uri)).ConfigureAwait(false);
+        
         return Task.FromResult<IActionResult>(
-            RedirectToAction("ViewPredictions", "Model", new {task_id = taskId}));
+            RedirectToAction(
+                "ViewPredictions", 
+                "Model", 
+                new {task_id = taskId}));
     }
 
     public async Task<IActionResult> RunTrain(string prefix, string delimiter, int index, IFormCollection data)
@@ -216,16 +271,20 @@ public class ModelController : Controller
         var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
         var files = FileUtils.FindSessionFiles(_environment.WebRootPath, userId, prefix);
 
-        var runRequestUri = Requests.GetRequestUri(_apiHttpClient?.BaseAddress, ApiEndpoints.RunTask);
+        var runRequestUri = Requests.GetRequestUri(
+            _apiHttpClient?.BaseAddress, ApiEndpoints.RunTask);
         var taskRequest = new RunTaskRequest {UserId = userId};
         
-        var response = await _apiHttpClient?.SendAsync(Requests.GetRequestMessage(taskRequest, runRequestUri))!;
-        var taskId = JsonConvert.DeserializeObject<JObject>(response.Content.ReadAsStringAsync().Result)["taskId"]
+        var response = await _apiHttpClient?
+            .SendAsync(Requests.GetRequestMessage(taskRequest, runRequestUri))!;
+        var taskId = JsonConvert.DeserializeObject<JObject>(
+                response.Content.ReadAsStringAsync().Result)["taskId"]
             .ToString();
 
         var trainingFileName = files.First().FullName;
 
-        var trainRequestUri = Requests.GetRequestUri(_apiHttpClient?.BaseAddress, ApiEndpoints.Train);
+        var trainRequestUri = Requests.GetRequestUri(
+            _apiHttpClient?.BaseAddress, ApiEndpoints.Train);
         var trainRequest = new TrainRequest
         {
             TaskId = taskId,
@@ -237,22 +296,24 @@ public class ModelController : Controller
             Algorithms = algorithms
         };
         
-        _apiHttpClient?.SendAsync(Requests.GetRequestMessage(trainRequest, trainRequestUri)).ConfigureAwait(false);
+        _apiHttpClient?.SendAsync(Requests.GetRequestMessage(trainRequest, trainRequestUri))
+            .ConfigureAwait(false);
 
         return RedirectToAction("Log", "Task", new {task_id = taskId});
     }
 
     public async Task<IActionResult> SelectModels([FromQuery(Name = "task_id")] string taskId)
     {
-        var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
-        var commonPath = Path.Combine(FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId);
+        var userId = Convert.ToInt32(_httpContextAccessor
+            .GetClaimValue(ClaimTypes.Sid));
+        var commonPath = Path.Combine(
+            FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId);
         
         var metricsPath = Path.Combine(commonPath, "metrics.csv");
         var files = new DirectoryInfo(commonPath).GetFiles();
         var algorithms = (from file in files 
                 where file.Name.EndsWith(".pickle") 
-                select file.Name.Replace(".pickle", string.Empty)
-                    .ToCamelCase())
+                select file.Name.Replace(".pickle", string.Empty))
             .ToHashSet();
 
         var metrics = await System.IO.File.ReadAllLinesAsync(metricsPath);
@@ -264,7 +325,7 @@ public class ModelController : Controller
 
         metricsToShow.Insert(0,
             metrics[0].Split(",").Length == 4
-                ? "Model, Score, MSE, MAE"
+                ? "Model, R-squared, MSE, MAE"
                 : "Model, Score, Accuracy, Precision, Recall, F1, ROC-AUC");
         ViewBag.Metrics = metricsToShow;
 
@@ -273,13 +334,16 @@ public class ModelController : Controller
     
     public IActionResult SaveSelectedModels([FromQuery(Name = "task_id")] string taskId, IFormCollection data)
     {
-        var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
+        var userId = Convert.ToInt32(
+            _httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
         var algorithms = data.GetValuesByPrefix(AlgorithmPrefix);
         var algorithmsToSave = new HashSet<string>();
         foreach (var algorithm in algorithms)
-            algorithmsToSave.Add(algorithm.RemovePrefix(AlgorithmPrefix).ToSnakeCase().AddSuffix(".pickle"));
+            algorithmsToSave.Add(algorithm.RemovePrefix(AlgorithmPrefix)
+                .AddSuffix(".pickle"));
 
-        var path = Path.Combine(FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId);
+        var path = Path.Combine(FileUtils.GetUserFolder(
+            _environment.WebRootPath, userId), taskId);
         var files = new DirectoryInfo(path).GetFiles();
         foreach (var file in files)
         {
@@ -291,26 +355,35 @@ public class ModelController : Controller
 
         return RedirectToAction(
             "Index", "Account", 
-            new{user_id = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid))});
+            new{user_id = Convert.ToInt32(
+                _httpContextAccessor.GetClaimValue(ClaimTypes.Sid))});
     }
     
     public IActionResult DeleteModel([FromQuery(Name = "task_id")] string taskId, [FromQuery] string algorithm)
     {
         var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
-        var algorithmToDelete = algorithm.RemovePrefix(AlgorithmPrefix).ToSnakeCase().AddSuffix(".pickle");
-        var path = Path.Combine(FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId, algorithmToDelete);
+        var algorithmToDelete = algorithm
+            .RemovePrefix(AlgorithmPrefix).AddSuffix(".pickle");
+        var path = Path.Combine(
+            FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId, algorithmToDelete);
         System.IO.File.Delete(path);
 
         return RedirectToAction(
             "Index", "Account", 
-            new{user_id = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid))});
+            new
+            {
+                user_id = Convert.ToInt32(_httpContextAccessor
+                    .GetClaimValue(ClaimTypes.Sid))
+            });
     }
     
     [Route("model/predictions")]
     public Task<IActionResult> ViewPredictions([FromQuery(Name = "task_id")] string taskId)
     {
-        var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
-        var path = Path.Combine(FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId);
+        var userId = Convert.ToInt32(_httpContextAccessor
+            .GetClaimValue(ClaimTypes.Sid));
+        var path = Path.Combine(
+            FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId);
         var filesWithPredictions = new DirectoryInfo(path);
         var filesToShow = 
             (from file in filesWithPredictions.GetFiles() 
@@ -324,24 +397,33 @@ public class ModelController : Controller
     }
 
     [Route("model/download_predictions")]
-    public Task<IActionResult> DownloadPredictions([FromQuery(Name = "task_id")] string taskId, [FromQuery(Name="algorithm")] string algorithm)
+    public Task<IActionResult> DownloadPredictions(
+        [FromQuery(Name = "task_id")] string taskId, 
+        [FromQuery(Name="algorithm")] string algorithm)
     {
-        var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
-        var path = Path.Combine(FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId, $"{algorithm}_predictions.csv");
+        var userId = Convert.ToInt32(_httpContextAccessor
+            .GetClaimValue(ClaimTypes.Sid));
+        var path = Path.Combine(
+            FileUtils.GetUserFolder(
+                _environment.WebRootPath, userId), taskId, $"{algorithm}_predictions.csv");
         var bytes = System.IO.File.ReadAllBytes(path);
         var memory = new MemoryStream(bytes);
         memory.Position = 0;
 
         return Task.FromResult<IActionResult>(
-            File(memory.ToArray(), "text/plain", $"{algorithm}_predictions.csv")
+            File(memory.ToArray(), 
+                "text/plain", 
+                $"{algorithm}_predictions.csv")
         );
     }
     
     [HttpGet("read_data")]
     public List<string> ReadData([FromQuery(Name = "task_id")] string taskId)
     {
-        var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
-        var path = Path.Combine(FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId);
+        var userId = Convert.ToInt32(_httpContextAccessor
+            .GetClaimValue(ClaimTypes.Sid));
+        var path = Path.Combine(
+            FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId);
         var filesWithPredictions = new DirectoryInfo(path);
         var filesToShow = 
             (from file in filesWithPredictions.GetFiles() 
@@ -365,14 +447,16 @@ public class ModelController : Controller
 
         return size > 0 ? $"{fileName} ({size} bytes)" : null;
     }
-
+    
     #region AlgorithmsHTMLRendering
 
     private void GetAlgorithmsHtml()
     {
         const int methodsSelectedCount = 0;
-        var regressionAlgorithmsHtml = GetAlgorithmsHtml(RegressionAlgorithms);
-        var classificationAlgorithmsHtml = GetAlgorithmsHtml(ClassificationAlgorithms);
+        var regressionAlgorithmsHtml = 
+            GetAlgorithmsHtml(RegressionAlgorithms);
+        var classificationAlgorithmsHtml = 
+            GetAlgorithmsHtml(ClassificationAlgorithms);
 
         ViewBag.MethodsSelectedCount = methodsSelectedCount.ToString();
         ViewBag.ClassificationMethods = classificationAlgorithmsHtml;
@@ -406,11 +490,13 @@ public class ModelController : Controller
 
     private Dictionary<string, string> RegressionAlgorithms =>
         _regressionAlgorithms ??=
-            FileUtils.LoadAlgorithmsFromJsonFile(_environment.WebRootPath, "py/!algorithms.regression.json");
+            FileUtils.LoadAlgorithmsFromJsonFile(
+                _environment.WebRootPath, "py/!algorithms.regression.json");
 
     private Dictionary<string, string> ClassificationAlgorithms =>
         _classificationAlgorithms ??=
-            FileUtils.LoadAlgorithmsFromJsonFile(_environment.WebRootPath, "py/!algorithms.classification.json");
+            FileUtils.LoadAlgorithmsFromJsonFile(
+                _environment.WebRootPath, "py/!algorithms.classification.json");
 
     #endregion
 

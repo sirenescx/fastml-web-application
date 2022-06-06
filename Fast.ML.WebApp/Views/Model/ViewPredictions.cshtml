@@ -3,14 +3,16 @@
 @inject IHttpContextAccessor _httpContextAccessor
 @{
     ViewData["Title"] = "Predictions";
-    var taskId = _httpContextAccessor?.HttpContext?.Request.Query["task_id"];
+    var taskId = _httpContextAccessor?
+        .HttpContext?.Request.Query["task_id"];
 }
 
 <h2 class="montserrat-font font-weight-bold">Prediction results</h2>
 
 @if (ViewBag.Predictions.Count > 0)
 {
-    <table class="table" id="predictionsTable" style="border-radius: 10px; border: 1px solid rgba(0,0,0,.125);">
+    <table class="table" id="predictionsTable" 
+           style="border-radius: 10px; border: 1px solid rgba(0,0,0,.125);">
         <tr>
             <th class="montserrat-font">Model</th>
             <th class="montserrat-font">Download link</th>
@@ -54,7 +56,8 @@
 }
 else
 {
-    <table class="table" hidden="hidden" id="predictionsTable" style="border-radius: 10px; border: 1px solid rgba(0,0,0,.125);">
+    <table class="table" hidden="hidden" id="predictionsTable" 
+           style="border-radius: 10px; border: 1px solid rgba(0,0,0,.125);">
         <tr>
             <th class="montserrat-font">Model</th>
             <th class="montserrat-font">Download link</th>

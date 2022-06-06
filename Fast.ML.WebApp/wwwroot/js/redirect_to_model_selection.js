@@ -1,11 +1,13 @@
 "use strict";
 
+// jQuery.support.cors = true;
+
 const hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:7131/pageUpdateHub")
+    // .withUrl("https://0.0.0.0:7131/pageUpdateHub")
+    .withUrl("https://fastmlapi.imet-db.ru/pageUpdateHub")
     .withAutomaticReconnect()
     .configureLogging(signalR.LogLevel.Trace)
     .build();
-
 
 const startConnection = async () => {
     try {
@@ -16,7 +18,8 @@ const startConnection = async () => {
     }
 };
 
-startConnection().then(() => hubConnection.on("ReceiveTrainEnd", (message) => {
+startConnection().then(() => hubConnection.on(
+    "ReceiveTrainEnd", (message) => {
     console.log(message)
     let url = window.location.href.replace("task", "model");
     url = new URL("selectmodels?task_id=" + message, url)
@@ -24,6 +27,8 @@ startConnection().then(() => hubConnection.on("ReceiveTrainEnd", (message) => {
 }));
 
 
-hubConnection.onreconnecting((e) => console.log("reconnecting", e));
-hubConnection.onreconnected((e) => console.log("reconnected", e));
+hubConnection.onreconnecting((e) => 
+    console.log("reconnecting", e));
+hubConnection.onreconnected((e) => 
+    console.log("reconnected", e));
       

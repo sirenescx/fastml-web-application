@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -8,9 +9,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Fast.ML.WebApp.Extensions;
 using Fast.ML.WebApp.Models;
+using Fast.ML.WebApp.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 
@@ -20,10 +23,13 @@ public class GoogleLoginController : Controller
 {
     private const string ApiHttpClientName = "ApiHttpClient";
     private readonly HttpClient _apiHttpClient;
+    private readonly IWebHostEnvironment _environment;
 
-    public GoogleLoginController(IHttpClientFactory httpClientFactory)
+    public GoogleLoginController(IHttpClientFactory httpClientFactory, 
+        IWebHostEnvironment environment)
     {
         _apiHttpClient = httpClientFactory.CreateClient(ApiHttpClientName);
+        _environment = environment;
     }
     
     public IActionResult Index() =>
@@ -36,20 +42,30 @@ public class GoogleLoginController : Controller
 
     public async Task<IActionResult> GoogleResponse()
     {
-        var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+        var authenticateResult = await HttpContext
+            .AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
         if (!authenticateResult.Succeeded)
             return BadRequest();
 
         if (authenticateResult.Principal == null) 
             return RedirectToAction("Index", "Home");
         
-        var claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-        claimsIdentity.AddClaim(authenticateResult.Principal, ClaimTypes.Email);
-        claimsIdentity.AddClaim(authenticateResult.Principal, ClaimTypes.GivenName);
-        claimsIdentity.AddClaim(authenticateResult.Principal, ClaimTypes.Surname);
+        var claimsIdentity = new ClaimsIdentity(
+            CookieAuthenticationDefaults.AuthenticationScheme);
+        claimsIdentity.AddClaim(
+            authenticateResult.Principal, ClaimTypes.Email);
+        claimsIdentity.AddClaim(
+            authenticateResult.Principal, ClaimTypes.GivenName);
+        claimsIdentity.AddClaim(
+            authenticateResult.Principal, ClaimTypes.Surname);
 
         var userId = await GetUserId(authenticateResult.Principal);
         claimsIdentity.AddClaim(ClaimTypes.Sid, userId);
+
+        var userFolder = FileUtils.GetUserFolder(
+            _environment.WebRootPath, userId!.Value);
+        if (!Directory.Exists(userFolder))
+            Directory.CreateDirectory(userFolder!);
 
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
@@ -64,7 +80,8 @@ public class GoogleLoginController : Controller
     {
         if (HttpContext.Request.Cookies.Count > 0)
         {
-            var siteCookies = HttpContext.Request.Cookies.Where(c =>
+            var siteCookies = 
+                HttpContext.Request.Cookies.Where(c =>
                 c.Key.Contains(".AspNetCore.") || c.Key.Contains("Microsoft.Authentication"));
             foreach (var cookie in siteCookies)
                 Response.Cookies.Delete(cookie.Key);
@@ -87,8 +104,10 @@ public class GoogleLoginController : Controller
             ["LastName"] = lastName
         };
         
-        var requestUri = new Uri(_apiHttpClient?.BaseAddress ?? new Uri(string.Empty), "users");
-        var requestUriWithParameters = QueryHelpers.AddQueryString(requestUri.AbsoluteUri, query);
+        var requestUri = new Uri(_apiHttpClient?.BaseAddress ?? 
+                                 new Uri(string.Empty), "users");
+        var requestUriWithParameters = QueryHelpers
+            .AddQueryString(requestUri.AbsoluteUri, query);
 
         var request = new HttpRequestMessage
         {

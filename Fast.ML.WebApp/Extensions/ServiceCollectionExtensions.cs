@@ -10,7 +10,8 @@ namespace Fast.ML.WebApp.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDependencies(
+        this IServiceCollection services, IConfiguration configuration)
     {
         return services
             .AddCookies()
@@ -21,7 +22,10 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddCookies(this IServiceCollection services)
     {
         return services
-            .Configure<CookiePolicyOptions>(options => { options.CheckConsentNeeded = _ => true; })
+            .Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = _ => true;
+            })
             .AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(60);
@@ -30,10 +34,12 @@ public static class ServiceCollectionExtensions
             });
     }
 
-    private static IServiceCollection AddGoogleAuthentication(this IServiceCollection services,
+    private static IServiceCollection AddGoogleAuthentication(
+        this IServiceCollection services,
         IConfiguration configuration)
     {
-        var googleAuthenticationOptions = configuration.GetSection("GoogleAuthenticationOptions");
+        var googleAuthenticationOptions =
+            configuration.GetSection("GoogleAuthenticationOptions");
 
         services
             .AddAuthentication(options =>
@@ -44,23 +50,27 @@ public static class ServiceCollectionExtensions
             .AddCookie()
             .AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = googleAuthenticationOptions.GetValue<string>("ClientId");
-                googleOptions.ClientSecret = googleAuthenticationOptions.GetValue<string>("ClientSecret");
+                googleOptions.ClientId = googleAuthenticationOptions
+                    .GetValue<string>("ClientId");
+                googleOptions.ClientSecret = googleAuthenticationOptions
+                    .GetValue<string>("ClientSecret");
                 googleOptions.SaveTokens = true;
             });
 
         return services;
     }
 
-    private static IHttpClientBuilder ConfigureHttpHandler(this IHttpClientBuilder httpClientBuilder)
+    private static IHttpClientBuilder ConfigureHttpHandler(
+        this IHttpClientBuilder httpClientBuilder)
     {
-        return httpClientBuilder.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-        {
-            AllowAutoRedirect = false,
-            ClientCertificateOptions = ClientCertificateOption.Manual,
-            ServerCertificateCustomValidationCallback =
-                (httpRequestMessage, cert, cetChain, policyErrors) => true
-        });
+        return httpClientBuilder.ConfigurePrimaryHttpMessageHandler(
+            () => new HttpClientHandler
+            {
+                AllowAutoRedirect = false,
+                ClientCertificateOptions = ClientCertificateOption.Manual,
+                ServerCertificateCustomValidationCallback =
+                    (httpRequestMessage, cert, cetChain, policyErrors) => true
+            });
     }
 
     private static IServiceCollection AddHttpClients(this IServiceCollection services, IConfiguration configuration)
@@ -69,7 +79,8 @@ public static class ServiceCollectionExtensions
         services
             .AddHttpClient(
                 "ApiHttpClient",
-                client => client.BaseAddress = new Uri(apiHttpClientOptions.GetValue<string>("Uri")))
+                client => client.BaseAddress = new 
+                    Uri(apiHttpClientOptions.GetValue<string>("Uri")))
             .ConfigureHttpHandler();
         return services;
     }

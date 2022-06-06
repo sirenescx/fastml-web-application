@@ -21,19 +21,28 @@ public static class FileUtils
     public static string GetUserFolder(string webRootPath, int userId) => 
         Path.Combine(webRootPath, UploadsDirectoryName, $"{userId:d10}");
     
-    public static string GetFilePath(string path, string fileName) => Path.Combine(path, fileName);
+    public static string GetFilePath(string path, string fileName) => 
+        Path.Combine(path, fileName);
 
     public static string GetFileNamePrefix(string sessionId, DateTime dateTime) =>
         $"{sessionId}-{DateTimeUtils.GetDateString(dateTime)}";
 
-    public static string GetFileExtension(string fileName) => Path.GetExtension(fileName);
+    public static string GetFileExtension(string fileName) => 
+        Path.GetExtension(fileName);
 
-    public static bool IsExcelFile(string fileName) => ExcelFileExtensions.Contains(GetFileExtension(fileName));
+    public static bool IsExcelFile(string fileName) => 
+        ExcelFileExtensions.Contains(GetFileExtension(fileName));
 
-    public static string GetServerFileName(string fileNamePrefix, string fileExtension, bool isPrediction = false) => 
+    public static string GetServerFileName(
+        string fileNamePrefix, 
+        string fileExtension,
+        bool isPrediction = false) => 
         $"{fileNamePrefix}-{Convert.ToInt32(isPrediction)}{fileExtension}";
 
-    public static FileInfo[] FindSessionFiles(string webRootPath, int userId, string prefix) =>
+    public static FileInfo[] FindSessionFiles(
+        string webRootPath, 
+        int userId, 
+        string prefix) =>
         new DirectoryInfo(GetUserFolder(webRootPath, userId))
             .GetFiles(prefix + PostfixSearchPattern)
             .OrderBy(file => file.Name)
@@ -48,7 +57,8 @@ public static class FileUtils
         };
 
         var csvReader = CsvDataReader.Create(textReader, csvReaderOptions);
-        return csvReader.GetColumnSchema().Select(column => column.ColumnName).ToArray()[index..];
+        return csvReader.GetColumnSchema()
+            .Select(column => column.ColumnName).ToArray()[index..];
     }
 
     public static string[] GetHeaderFromExcelFile(string filePath, int index)
@@ -57,10 +67,13 @@ public static class FileUtils
         var worksheet = workbook.Worksheets.First();
         var firstRow = worksheet.Rows().First().Cells();
 
-        return firstRow.Select(column => column.CachedValue.ToString()).ToArray()[index..];
+        return firstRow
+            .Select(column => column.CachedValue.ToString()).ToArray()[index..];
     }
     
-    public static Dictionary<string, string> LoadAlgorithmsFromJsonFile(string webRootPath, string fileName)
+    public static Dictionary<string, string> LoadAlgorithmsFromJsonFile(
+        string webRootPath, 
+        string fileName)
     {
         var filePath = GetFilePath(webRootPath, fileName);
         var jsonLines = File.ReadAllLines(filePath);
@@ -69,8 +82,10 @@ public static class FileUtils
 
         foreach (var jsonLine in jsonLines)
         {
-            var name = System.Text.Json.JsonDocument.Parse(jsonLine).RootElement.GetProperty("name").GetString();
-            var settings = System.Text.Json.JsonDocument.Parse(jsonLine).RootElement.GetProperty("settings").ToString();
+            var name = System.Text.Json
+                .JsonDocument.Parse(jsonLine).RootElement.GetProperty("name").GetString();
+            var settings = System.Text.Json
+                .JsonDocument.Parse(jsonLine).RootElement.GetProperty("settings").ToString();
             algorithmsSettings.Add(name!, settings);
         }
 

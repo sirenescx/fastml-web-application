@@ -17,7 +17,8 @@ public class AccountController : Controller
     private readonly IWebHostEnvironment _environment;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AccountController(IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
+    public AccountController(IWebHostEnvironment environment, 
+        IHttpContextAccessor httpContextAccessor)
     {
         _environment = environment;
         _httpContextAccessor = httpContextAccessor;
@@ -41,7 +42,12 @@ public class AccountController : Controller
             {
                 if (file.Name.EndsWith(".pickle"))
                 {
-                    algorithms.Add(string.Join("\t", folder.Name, "alg_" + file.Name.ToCamelCase().Replace(".pickle", string.Empty)));
+                    algorithms.Add(
+                        string.Join(
+                            "\t", 
+                            folder.Name,
+                            "alg_" + file.Name.ToCamelCase()
+                                .Replace(".pickle", string.Empty)));
                 }
             }
         }
@@ -53,7 +59,8 @@ public class AccountController : Controller
 }
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-public class AuthorizeAttribute : Microsoft.AspNetCore.Authorization.AuthorizeAttribute, IAuthorizationFilter
+public class AuthorizeAttribute : Microsoft.AspNetCore.Authorization.AuthorizeAttribute, 
+    IAuthorizationFilter
 {
     public void OnAuthorization(AuthorizationFilterContext context)
     {

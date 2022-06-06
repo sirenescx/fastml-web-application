@@ -5,8 +5,13 @@
 }
 
 <div class="text-center" style="height: 100%; justify-content: center; align-items: center; padding-top: 24vh">
-    <h1 class="montserrat-font font-weight-bold">Upload <a href="/get_started#format">your dataset (Excel / CSV)</a></h1>
-    @using (Html.BeginForm("UploadTrainingFile", "Model", FormMethod.Post, new {enctype = "multipart/form-data"}))
+    <h1 class="montserrat-font font-weight-bold">Upload <a href="/get_started#format">
+        your dataset (Excel / CSV)
+    </a></h1>
+    @using (Html.BeginForm(
+        "UploadTrainingFile", 
+        "Model", FormMethod.Post, 
+        new {enctype = "multipart/form-data"}))
     {
         @Html.AntiForgeryToken()
         @Html.Raw(ViewBag.ErrorMessage)
@@ -14,13 +19,19 @@
             <div class="col justify-content-start text-center">
                 <div >
                     <label style="display: inline-block; width: 100%;">
-                        <input type="file" id="file_button" class="form-control-image" name="trainingFile" accept="text/csv, .xlsx">
-                        <span style="display: inline-block; width: 100%;" class="btn montserrat-font btn-outline-danger montserrat-font">upload file for training</span>
+                        <input type="file" id="file_button" class="form-control-image" 
+                               name="trainingFile" accept="text/csv, .xlsx">
+                        <span style="display: inline-block; width: 100%;" 
+                              class="btn montserrat-font btn-outline-danger montserrat-font">
+                            upload file for training
+                        </span>
                     </label>
                 </div>
                 <div>
                     <label style="display: block; width: 100%;">
-                        <input type="text" style="text-align: center" placeholder="separator (char, for CSV)" id="separator_input" class="form-control montserrat-font" name="separator">
+                        <input type="text" style="text-align: center" 
+                               placeholder="separator (char, for CSV)" 
+                               id="separator_input" class="form-control montserrat-font" name="separator">
                     </label>
                 </div>
                 <div >
@@ -33,7 +44,8 @@
         </div>
         <br/>
         <div>
-            <input type="submit" class="btn btn-primary round-border montserrat-font" id="submitButton" value="Process" style="width: 15vh">
+            <input type="submit" class="btn btn-primary round-border montserrat-font" 
+                   id="submitButton" value="Process" style="width: 15vh">
         </div>
     }
 </div>

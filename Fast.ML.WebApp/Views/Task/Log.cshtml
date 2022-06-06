@@ -14,7 +14,9 @@
     <script>
      (function update() {
         $.ajax({
-            url: '@Url.Action("ReadData", "Task", new {task_id = _httpContextAccessor.HttpContext.Request.Query["task_id"]})',
+            url: '@Url.Action("ReadData", "Task", 
+                      new {task_id = 
+                          _httpContextAccessor.HttpContext.Request.Query["task_id"]})',
             success: function (data) {
                 $('#logs').html(data);
             },

@@ -9,7 +9,8 @@
     new {task_id = _httpContextAccessor.HttpContext.Request.Query["task_id"]},
     FormMethod.Post))
 {
-    <table class="table" id="models_table" style="border-radius: 10px; border: 1px solid rgba(0,0,0,.125);">
+    <table class="table" id="models_table" 
+           style="border-radius: 10px; border: 1px solid rgba(0,0,0,.125);">
         @for (var i = 0; i < ViewBag.Metrics.Count; ++i)
         {
             var values = ViewBag.Metrics[i].Split(",");
@@ -19,7 +20,8 @@
                     <th class="montserrat-font">Save</th>
                     @for (int j = 0; j < values.Length; ++j)
                     {
-                        <th onclick="sortTable(@(j + 1), 'models_table')" class="montserrat-font">@values[j] ▲</th>
+                        <th onclick="sortTable(@(j + 1), 'models_table')" 
+                            class="montserrat-font">@values[j] ▲</th>
                     }
                 </tr>
             }
@@ -39,7 +41,9 @@
     </table>
     <br/>
     <div class="text-center" style="justify-content: center; align-items: center;">
-        <button class="btn btn-primary montserrat-font round-border">Save selected models</button>
+        <button class="btn btn-primary montserrat-font round-border">
+            Save selected models
+        </button>
     </div>
 }
 

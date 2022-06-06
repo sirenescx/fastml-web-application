@@ -45,7 +45,8 @@ public class TaskController : Controller
     [Route("/tasks")]
     public async Task<IActionResult> Tasks([FromQuery(Name = "user_id")] int userId)
     {
-        var systemUserId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
+        var systemUserId = Convert.ToInt32(_httpContextAccessor
+            .GetClaimValue(ClaimTypes.Sid));
         
         if (userId != systemUserId)
         {
@@ -53,13 +54,15 @@ public class TaskController : Controller
                 new {user_id = systemUserId});
         }
 
-        var requestUri = new Uri(_apiHttpClient?.BaseAddress ?? new Uri(string.Empty), "tasks");
+        var requestUri = new Uri(_apiHttpClient?.BaseAddress ?? 
+                                 new Uri(string.Empty), "tasks");
         var query = new Dictionary<string, string>
         {
             ["userId"] = userId.ToString()
         };
 
-        var requestUriWithParameters = QueryHelpers.AddQueryString(requestUri.AbsoluteUri, query);
+        var requestUriWithParameters = QueryHelpers
+            .AddQueryString(requestUri.AbsoluteUri, query);
 
         var request = new HttpRequestMessage
         {
@@ -67,14 +70,13 @@ public class TaskController : Controller
             RequestUri = new Uri(requestUriWithParameters)
         };
 
-        var response = await _apiHttpClient?.SendAsync(request, CancellationToken.None)!.Result.Content
+        var response = await _apiHttpClient?.SendAsync(
+                request, CancellationToken.None)!.Result.Content
             .ReadAsStringAsync();
-
-        // var content = JsonConvert.SerializeObject(query);
-        // var httpContent = new StringContent(content, Encoding.UTF8, "application/json");
-        // var response = await _apiHttpClient.GetAsync(requestUri)!.Result.Content.ReadAsStringAsync();
-        var x = JsonConvert.DeserializeObject<JObject>(response);
-        var taskIds = JsonConvert.DeserializeObject<JObject>(response)["taskIds"].Select(token => token.ToString());
+        
+        var taskIds = JsonConvert
+            .DeserializeObject<JObject>(response)["taskIds"]
+            .Select(token => token.ToString());
 
         ViewBag.Tasks = taskIds.OrderByDescending(token => token).ToList();
         Console.WriteLine();
@@ -91,9 +93,18 @@ public class TaskController : Controller
     [HttpGet("read_data")]
     public ActionResult ReadData([FromQuery(Name = "task_id")] string taskId)
     {
-        var userId = Convert.ToInt32(_httpContextAccessor.GetClaimValue(ClaimTypes.Sid));
-        var logsPath = Path.Combine(FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId, "log");
-        var logs = System.IO.File.ReadAllLines(logsPath);
-        return Content(string.Join(" <br> ", logs));
+        var userId = Convert.ToInt32(_httpContextAccessor
+            .GetClaimValue(ClaimTypes.Sid));
+        var logsPath = Path.Combine(
+            FileUtils.GetUserFolder(_environment.WebRootPath, userId), taskId, "log");
+        using var fs = new FileStream(
+            logsPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        using var sr = new StreamReader(fs);
+        var logLines = new List<string>();
+        while (!sr.EndOfStream)
+        {
+            logLines.Add(sr.ReadLine());
+        }
+        return Content(string.Join(" <br> ", logLines));
     }
 }

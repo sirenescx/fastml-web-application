@@ -4,8 +4,10 @@
 //
 // namespace Fast.ML.WebApp.Extensions;
 //
-// [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-// public class AuthorizeAttribute : Microsoft.AspNetCore.Authorization.AuthorizeAttribute, IAuthorizationFilter
+// [AttributeUsage(AttributeTargets.Class | 
+//                 AttributeTargets.Method, AllowMultiple = true)]
+// public class AuthorizeAttribute : Microsoft.AspNetCore
+//     .Authorization.AuthorizeAttribute, IAuthorizationFilter
 // {
 //     public void OnAuthorization(AuthorizationFilterContext context)
 //     {

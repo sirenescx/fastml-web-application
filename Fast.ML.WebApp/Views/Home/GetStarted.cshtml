@@ -5,18 +5,23 @@
     ViewData["Title"] = "Getting started";
 }
 
-<h1 class="montserrat-font magenta font-weight-bold">Getting started with <span class="text-dark">Fast</span> ML</h1>
+<h1 class="montserrat-font magenta font-weight-bold">
+    Getting started with <span class="text-dark">Fast</span> ML
+</h1>
 
 <div class="container center">
     <div class="row justify-content-start">
         <div class="column" style="width: 55%; padding-top: 5%">
             <h5 class="montserrat-font">
-                This website allows you to automatically build and train machine learning models for regression and
-                classification problems using your dataset in tabular format, as well as to use built models for prediction
+                This website allows you to automatically build and train machine 
+                learning models for regression and
+                classification problems using your dataset in tabular format, 
+                as well as to use built models for prediction
                 on structurally identical data.
             </h5>
             <h5 class="montserrat-font">
-                The system performs automatic preprocessing of data, including gaps filling, encoding of categorical
+                The system performs automatic preprocessing of data, 
+                including gaps filling, encoding of categorical
                 variables and feature selection.
             </h5>
             <h5 class="montserrat-font">
@@ -27,11 +32,13 @@
                 whenever you want.
             </h5>
             <h5 class="montserrat-font">
-                Feel free to reach out to us if you want us to add more models, even ones you've written yourself!
+                Feel free to reach out to us if you want us to add more models, 
+                even ones you've written yourself!
             </h5>
         </div>
         <div class="column" style="float: right; width: 45%; padding-left: 30px">
-            <img src="@Url.Content("~/img/getting_started.png")" style="max-width: 100%; max-height: 100vh"/>
+            <img src="@Url.Content("~/img/getting_started.png")" 
+                 style="max-width: 100%; max-height: 100vh"/>
         </div>
     </div>
 </div>
@@ -55,8 +62,10 @@
 <div class="container">
     <h2 class="montserrat-font font-weight-bold">Supported file formats</h2>
     <p class="montserrat-font">
-        To use the system features it is necessary to prepare data in the form of <b>Microsoft Excel files (xlsx)</b>
-        or <b>CSV</b> files (separator should be specified by user). Extensions of training and prediction datasets 
+        To use the system features it is necessary to prepare data in 
+        the form of <b>Microsoft Excel files (xlsx)</b>
+        or <b>CSV</b> files (separator should be specified by user).
+        Extensions of training and prediction datasets 
         should match.
     </p>
 </div>
@@ -66,8 +75,10 @@
         <div class="column" style="width: 45%;">
             <h2 class="montserrat-font font-weight-bold text-center blue">Training data</h2>
             <ul>
-                <li class="montserrat-font">First line of the file with training data should contain feature names.</li>
-                <li class="montserrat-font">Second and subsequent lines should contain data (one object per line).</li>
+                <li class="montserrat-font">First line of the file with 
+                    training data should contain feature names.</li>
+                <li class="montserrat-font">Second and subsequent lines 
+                    should contain data (one object per line).</li>
                 <li class="montserrat-font">
                     Training data must contain a column with the target variable,
                     you can specify its name after downloading the file.
@@ -81,15 +92,21 @@
         <div class="column" style="width: 10%;">
         </div>
         <div class="column" style="width: 45%;">
-            <h2 class="montserrat-font font-weight-bold text-center magenta">Data for prediction</h2>
+            <h2 class="montserrat-font font-weight-bold text-center magenta">
+                Data for prediction
+            </h2>
             <ul>
-                <li class="montserrat-font">First line of the file with data for prediction should contain feature names.</li>
-                <li class="montserrat-font">Second and subsequent lines should contain data (one object per line).</li>
+                <li class="montserrat-font">First line of the file with data for 
+                    prediction should contain feature names.</li>
+                <li class="montserrat-font">Second and subsequent lines should
+                    contain data (one object per line).</li>
                 <li class="montserrat-font">
-                    Table structure should be identical to the training data (column names and feature vector lengths should be the same)
+                    Table structure should be identical to the training data 
+                    (column names and feature vector lengths should be the same)
                 </li>
                 <li class="montserrat-font">
-                    Columns should contain feature description of objects. The vector length must be the same for all objects.
+                    Columns should contain feature description of objects. 
+                    The vector length must be the same for all objects.
                 </li>
             </ul>
         </div>
@@ -99,13 +116,13 @@
 <h2 class="montserrat-font font-weight-bold">Input data samples Excel (XLS / XLSX) and CSV</h2>
 <ul>
     <li>
-        @* <a class="montserrat-font" href="~/Example/TrainingSet.xls">XLS</a> / *@
         <a class="montserrat-font" href="~/Example/TrainingSet.xlsx">XLSX</a> /
-        <a class="montserrat-font" href="~/Example/TrainingSet.csv">CSV</a> <text class="montserrat-font">for training;</text>
+        <a class="montserrat-font" href="~/Example/TrainingSet.csv">CSV</a> 
+        <text class="montserrat-font">for training;</text>
     </li>
     <li>
-        @* <a class="montserrat-font" href="~/Example/Prediction.xls">XLS</a> / *@
         <a class="montserrat-font" href="~/Example/Prediction.xlsx">XLSX</a> /
-        <a class="montserrat-font" href="~/Example/Prediction.csv">CSV</a> <text class="montserrat-font">for prediction.</text>
+        <a class="montserrat-font" href="~/Example/Prediction.csv">CSV</a> 
+        <text class="montserrat-font">for prediction.</text>
     </li>
 </ul>
